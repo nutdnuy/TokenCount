@@ -40,7 +40,7 @@ def calculate_costs(token_count: int) -> dict:
     return costs
 
 # Title of the app
-st.title("📄 PDF to Text Extractor with Token Count, Cost Estimation, and Loading Bar")
+st.title("📄 PDF to Text Extractor with Token Count and Cost Estimation")
 
 # Upload PDF file
 uploaded_pdf = st.file_uploader("Upload your PDF file here", type=["pdf"])
