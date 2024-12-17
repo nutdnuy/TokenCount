@@ -1,17 +1,23 @@
 import streamlit as st
 import pdfplumber
 import tiktoken
+import time  # Added to simulate progress
 
-# Function to extract text from the uploaded PDF
+# Function to extract text from the uploaded PDF with progress bar
 def extract_text_from_pdf(pdf_file):
-    """Extract text from each page of a PDF file."""
+    """Extract text from each page of a PDF file with a loading progress bar."""
     full_text = ''
     with pdfplumber.open(pdf_file) as pdf:
+        total_pages = len(pdf.pages)
+        progress_bar = st.progress(0)  # Initialize progress bar
         for page_number, page in enumerate(pdf.pages, start=1):
             page_text = page.extract_text()
             if page_text:
                 full_text += f'\n--- Page {page_number} ---\n'
                 full_text += page_text + '\n'
+            # Update the progress bar
+            progress_percentage = page_number / total_pages
+            progress_bar.progress(progress_percentage)
     return full_text
 
 # Function to count tokens using tiktoken
@@ -34,7 +40,7 @@ def calculate_costs(token_count: int) -> dict:
     return costs
 
 # Title of the app
-st.title("📄 PDF to Text Extractor with Token Count and Cost Estimation")
+st.title("📄 PDF to Text Extractor with Token Count, Cost Estimation, and Loading Bar")
 
 # Upload PDF file
 uploaded_pdf = st.file_uploader("Upload your PDF file here", type=["pdf"])
@@ -42,8 +48,9 @@ uploaded_pdf = st.file_uploader("Upload your PDF file here", type=["pdf"])
 if uploaded_pdf:
     st.subheader("📋 Extracted Text from PDF")
     
-    # Extract the text from the uploaded PDF
-    extracted_text = extract_text_from_pdf(uploaded_pdf)
+    # Extract the text from the uploaded PDF with progress bar
+    with st.spinner('Extracting text from PDF... Please wait.'):
+        extracted_text = extract_text_from_pdf(uploaded_pdf)
     
     if extracted_text:
         # Count the tokens in the extracted text
