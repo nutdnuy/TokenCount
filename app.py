@@ -31,8 +31,8 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
 def calculate_costs(token_count: int) -> dict:
     """Calculate the cost for different models based on the token count."""
     cost_per_1m_tokens = {
-        'GPT-4': 2.50,            # $2.50 per 1M tokens
-        'GPT-4 Mini': 0.150,      # $0.15 per 1M tokens
+        'GPT-4o': 2.50,            # $2.50 per 1M tokens
+        'GPT-4o Mini': 0.150,      # $0.15 per 1M tokens
         'O1-Preview': 15.00,      # $15.00 per 1M tokens
         'GPT-4 Turbo': 10.00      # $10.00 per 1M tokens
     }
