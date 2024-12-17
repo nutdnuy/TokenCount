@@ -1,23 +1,17 @@
 import streamlit as st
 import pdfplumber
 import tiktoken
-import time  # Added to simulate progress
 
-# Function to extract text from the uploaded PDF with progress bar
+# Function to extract text from the uploaded PDF
 def extract_text_from_pdf(pdf_file):
-    """Extract text from each page of a PDF file with a loading progress bar."""
+    """Extract text from each page of a PDF file."""
     full_text = ''
     with pdfplumber.open(pdf_file) as pdf:
-        total_pages = len(pdf.pages)
-        progress_bar = st.progress(0)  # Initialize progress bar
         for page_number, page in enumerate(pdf.pages, start=1):
             page_text = page.extract_text()
             if page_text:
                 full_text += f'\n--- Page {page_number} ---\n'
                 full_text += page_text + '\n'
-            # Update the progress bar
-            progress_percentage = page_number / total_pages
-            progress_bar.progress(progress_percentage)
     return full_text
 
 # Function to count tokens using tiktoken
@@ -31,8 +25,8 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
 def calculate_costs(token_count: int) -> dict:
     """Calculate the cost for different models based on the token count."""
     cost_per_1m_tokens = {
-        'GPT-4o': 2.50,            # $2.50 per 1M tokens
-        'GPT-4o Mini': 0.150,      # $0.15 per 1M tokens
+        'GPT-4': 2.50,            # $2.50 per 1M tokens
+        'GPT-4 Mini': 0.150,      # $0.15 per 1M tokens
         'O1-Preview': 15.00,      # $15.00 per 1M tokens
         'GPT-4 Turbo': 10.00      # $10.00 per 1M tokens
     }
@@ -48,9 +42,8 @@ uploaded_pdf = st.file_uploader("Upload your PDF file here", type=["pdf"])
 if uploaded_pdf:
     st.subheader("📋 Extracted Text from PDF")
     
-    # Extract the text from the uploaded PDF with progress bar
-    with st.spinner('Extracting text from PDF... Please wait.'):
-        extracted_text = extract_text_from_pdf(uploaded_pdf)
+    # Extract the text from the uploaded PDF
+    extracted_text = extract_text_from_pdf(uploaded_pdf)
     
     if extracted_text:
         # Count the tokens in the extracted text
