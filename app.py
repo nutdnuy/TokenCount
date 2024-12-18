@@ -63,12 +63,5 @@ if uploaded_pdf:
         for model, cost in costs.items():
             st.metric(label=f"Cost for {model}", value=f"${cost:.4f}")
         
-        # Download option for the extracted text
-        st.download_button(
-            label="💾 Download Extracted Text",
-            data=extracted_text,
-            file_name='extracted_text.txt',
-            mime='text/plain'
-        )
     else:
         st.warning("No text could be extracted from this PDF.")
