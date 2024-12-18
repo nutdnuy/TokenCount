@@ -50,7 +50,7 @@ if uploaded_pdf:
         token_count = num_tokens_from_string(extracted_text)
         
         # Display the extracted text
-        st.text_area("Extracted Text", extracted_text, height=400)
+        #st.text_area("Extracted Text", extracted_text, height=400)
         
         # Display token count
         st.metric(label="📏 Total Tokens", value=f"{token_count} tokens")
